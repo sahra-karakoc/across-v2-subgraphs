@@ -1,6 +1,72 @@
-type ExampleEntity @entity {
-  id: ID!
-  count: BigInt!
-  newBondToken: Bytes! # address
-  newBondAmount: BigInt! # uint256
+type HubPool @entity {  
+ " Set to 1 because it is unique" 
+   id: ID! 
+
+   cumulativeUniqueLiquidityProviders: [User!]
+   cumulativeUniqueLiquidityProvidersCount: BigInt!
+
 }
+type User @entity {
+  " Address of the liquidity provider"
+  id: ID! 
+
+  " List of liquidityAdded entities by the user"
+  liquidityAdded: [LiquidityAdded!] @derivedFrom(field:"liquidityProvider")
+
+" List of liquidityRemoved entities by the user"
+  liquidityRemoved: [LiquidityRemoved!] @derivedFrom(field:"liquidityProvider")
+
+  " Number of liquidityAdded entities by the user, also used as index to produce id for liquidityAdded entities"
+  liquidityAddedCount: BigInt!
+
+    " Number of liquidityRemoved entities by the user, also used as index to produce id for liquidityRemoved entities"
+  liquidityRemovedCount: BigInt! 
+
+}
+
+type LiquidityAdded @entity {
+  # { Smart contract address of the l1 token } - { Address of the liquidity provider } - { index }
+  # where index is the index of the liquidity added by this address to Hub Pool v2
+  # @notice that one address can provide liquidity for different 
+  # l1Tokens hence some l1-address-index id combinations might not exist
+  id: ID!
+
+  " Smart contract address of the l1 token of the added liquidity"
+  l1Token: Bytes!
+
+  " Amount of the l1 token added as liquidity"
+  amount: BigInt!
+
+  " Amount of the lp tokens minted"
+  lpTokensMinted: BigInt!
+
+  " Address of the liquidity provider"
+  liquidityProvider: User!
+}
+
+type LiquidityRemoved @entity {
+  # { Smart contract address of the l1 token } - { Address of the liquidity provider } - { index }
+  # where index is the index of the liquidity removed by this address from Hub Pool v2
+  # @notice that one address can removed liquidity for different 
+  # l1Tokens hence some l1-address-index id combinations might not exist
+  id: ID!
+
+  " Smart contract address of the l1 token of the removed liquidity"
+  l1Token: Bytes!
+
+  " Amount of the l1 token removed"
+  amount: BigInt!
+
+  " Amount of the lp tokens burnt"
+  lpTokensBurnt: BigInt!
+
+  " Address of the liquidity provider"
+  liquidityProvider: User!
+}
+
+
+
+# enum AddedOrRemoved  {
+#   Added
+#   Removed
+# }
