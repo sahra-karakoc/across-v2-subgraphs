@@ -22,7 +22,7 @@ import {
   SetPoolRebalanceRoute,
   SpokePoolAdminFunctionTriggered
 } from "../../generated/HubPool/HubPool"
-import {  } from "../../generated/schema"
+import { AddedLiquidity, RemovedLiquidity } from "../../generated/schema"
 
 import {createOrLoadUser} from "../../src/mappings/helpers"
 export function handleBondSet(event: BondSet): void {
@@ -48,10 +48,13 @@ export function handleL2TokenDisabledForLiquidityProvision(
 ): void {}
 
 export function handleLiquidityAdded(event: LiquidityAdded): void {
-    let user = createOrLoadUser(event.params.liquidityProvider); 
-    let id = event.params.l1Token.concat("-")
-    let liquidityAdded = new LiquidityAdded()
-
+    let user = createOrLoadUser(event.params.liquidityProvider.toHexString()); 
+    let previousCount = user.addedLiquidityCount
+    user.addedLiquidityCount = previousCount.plus(BigInt.fromI32(1))
+    let id = event.params.l1Token.toString().concat("-").concat(user.addedLiquidityCount.toString())
+    let addedLiquidity = new AddedLiquidity(id)
+    user.save()
+    addedLiquidity.save()
 }
 
 export function handleLiquidityRemoved(event: LiquidityRemoved): void {}

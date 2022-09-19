@@ -106,8 +106,8 @@ export class User extends Entity {
     this.set("id", Value.fromString(value));
   }
 
-  get liquidityAdded(): Array<string> | null {
-    let value = this.get("liquidityAdded");
+  get addedLiquidities(): Array<string> | null {
+    let value = this.get("addedLiquidities");
     if (!value || value.kind == ValueKind.NULL) {
       return null;
     } else {
@@ -115,16 +115,16 @@ export class User extends Entity {
     }
   }
 
-  set liquidityAdded(value: Array<string> | null) {
+  set addedLiquidities(value: Array<string> | null) {
     if (!value) {
-      this.unset("liquidityAdded");
+      this.unset("addedLiquidities");
     } else {
-      this.set("liquidityAdded", Value.fromStringArray(<Array<string>>value));
+      this.set("addedLiquidities", Value.fromStringArray(<Array<string>>value));
     }
   }
 
-  get liquidityRemoved(): Array<string> | null {
-    let value = this.get("liquidityRemoved");
+  get removedLiquidities(): Array<string> | null {
+    let value = this.get("removedLiquidities");
     if (!value || value.kind == ValueKind.NULL) {
       return null;
     } else {
@@ -132,34 +132,37 @@ export class User extends Entity {
     }
   }
 
-  set liquidityRemoved(value: Array<string> | null) {
+  set removedLiquidities(value: Array<string> | null) {
     if (!value) {
-      this.unset("liquidityRemoved");
+      this.unset("removedLiquidities");
     } else {
-      this.set("liquidityRemoved", Value.fromStringArray(<Array<string>>value));
+      this.set(
+        "removedLiquidities",
+        Value.fromStringArray(<Array<string>>value)
+      );
     }
   }
 
-  get liquidityAddedCount(): BigInt {
-    let value = this.get("liquidityAddedCount");
+  get addedLiquidityCount(): BigInt {
+    let value = this.get("addedLiquidityCount");
     return value!.toBigInt();
   }
 
-  set liquidityAddedCount(value: BigInt) {
-    this.set("liquidityAddedCount", Value.fromBigInt(value));
+  set addedLiquidityCount(value: BigInt) {
+    this.set("addedLiquidityCount", Value.fromBigInt(value));
   }
 
-  get liquidityRemovedCount(): BigInt {
-    let value = this.get("liquidityRemovedCount");
+  get removedLiquidityCount(): BigInt {
+    let value = this.get("removedLiquidityCount");
     return value!.toBigInt();
   }
 
-  set liquidityRemovedCount(value: BigInt) {
-    this.set("liquidityRemovedCount", Value.fromBigInt(value));
+  set removedLiquidityCount(value: BigInt) {
+    this.set("removedLiquidityCount", Value.fromBigInt(value));
   }
 }
 
-export class LiquidityAdded extends Entity {
+export class AddedLiquidity extends Entity {
   constructor(id: string) {
     super();
     this.set("id", Value.fromString(id));
@@ -167,18 +170,18 @@ export class LiquidityAdded extends Entity {
 
   save(): void {
     let id = this.get("id");
-    assert(id != null, "Cannot save LiquidityAdded entity without an ID");
+    assert(id != null, "Cannot save AddedLiquidity entity without an ID");
     if (id) {
       assert(
         id.kind == ValueKind.STRING,
-        `Entities of type LiquidityAdded must have an ID of type String but the id '${id.displayData()}' is of type ${id.displayKind()}`
+        `Entities of type AddedLiquidity must have an ID of type String but the id '${id.displayData()}' is of type ${id.displayKind()}`
       );
-      store.set("LiquidityAdded", id.toString(), this);
+      store.set("AddedLiquidity", id.toString(), this);
     }
   }
 
-  static load(id: string): LiquidityAdded | null {
-    return changetype<LiquidityAdded | null>(store.get("LiquidityAdded", id));
+  static load(id: string): AddedLiquidity | null {
+    return changetype<AddedLiquidity | null>(store.get("AddedLiquidity", id));
   }
 
   get id(): string {
@@ -227,7 +230,7 @@ export class LiquidityAdded extends Entity {
   }
 }
 
-export class LiquidityRemoved extends Entity {
+export class RemovedLiquidity extends Entity {
   constructor(id: string) {
     super();
     this.set("id", Value.fromString(id));
@@ -235,19 +238,19 @@ export class LiquidityRemoved extends Entity {
 
   save(): void {
     let id = this.get("id");
-    assert(id != null, "Cannot save LiquidityRemoved entity without an ID");
+    assert(id != null, "Cannot save RemovedLiquidity entity without an ID");
     if (id) {
       assert(
         id.kind == ValueKind.STRING,
-        `Entities of type LiquidityRemoved must have an ID of type String but the id '${id.displayData()}' is of type ${id.displayKind()}`
+        `Entities of type RemovedLiquidity must have an ID of type String but the id '${id.displayData()}' is of type ${id.displayKind()}`
       );
-      store.set("LiquidityRemoved", id.toString(), this);
+      store.set("RemovedLiquidity", id.toString(), this);
     }
   }
 
-  static load(id: string): LiquidityRemoved | null {
-    return changetype<LiquidityRemoved | null>(
-      store.get("LiquidityRemoved", id)
+  static load(id: string): RemovedLiquidity | null {
+    return changetype<RemovedLiquidity | null>(
+      store.get("RemovedLiquidity", id)
     );
   }
 

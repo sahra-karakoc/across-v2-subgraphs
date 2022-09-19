@@ -11,20 +11,20 @@ type User @entity {
   id: ID! 
 
   " List of liquidityAdded entities by the user"
-  liquidityAdded: [LiquidityAdded!] @derivedFrom(field:"liquidityProvider")
+  addedLiquidities: [AddedLiquidity!] @derivedFrom(field:"liquidityProvider")
 
 " List of liquidityRemoved entities by the user"
-  liquidityRemoved: [LiquidityRemoved!] @derivedFrom(field:"liquidityProvider")
+  removedLiquidities: [RemovedLiquidity!] @derivedFrom(field:"liquidityProvider")
 
   " Number of liquidityAdded entities by the user, also used as index to produce id for liquidityAdded entities"
-  liquidityAddedCount: BigInt!
+  addedLiquidityCount: BigInt!
 
     " Number of liquidityRemoved entities by the user, also used as index to produce id for liquidityRemoved entities"
-  liquidityRemovedCount: BigInt! 
+  removedLiquidityCount: BigInt! 
 
 }
 
-type LiquidityAdded @entity {
+type AddedLiquidity @entity {
   # { Smart contract address of the l1 token } - { Address of the liquidity provider } - { index }
   # where index is the index of the liquidity added by this address to Hub Pool v2
   # @notice that one address can provide liquidity for different 
@@ -44,7 +44,7 @@ type LiquidityAdded @entity {
   liquidityProvider: User!
 }
 
-type LiquidityRemoved @entity {
+type RemovedLiquidity @entity {
   # { Smart contract address of the l1 token } - { Address of the liquidity provider } - { index }
   # where index is the index of the liquidity removed by this address from Hub Pool v2
   # @notice that one address can removed liquidity for different 
@@ -64,7 +64,8 @@ type LiquidityRemoved @entity {
   liquidityProvider: User!
 }
 
-
+# TODO hourly snapshot of the HubPool
+# TODO daility snapshot of the HubPool
 
 # enum AddedOrRemoved  {
 #   Added
