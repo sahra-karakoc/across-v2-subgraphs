@@ -31,8 +31,8 @@ type AddedLiquidity @entity {
   # l1Tokens hence some l1-address-index id combinations might not exist
   id: ID!
 
-  " Smart contract address of the l1 token of the added liquidity"
-  l1Token: Bytes!
+  " L1 token that is added to the the HubPool"
+  l1Token: L1Token!
 
   " Amount of the l1 token added as liquidity"
   amount: BigInt!
@@ -51,8 +51,8 @@ type RemovedLiquidity @entity {
   # l1Tokens hence some l1-address-index id combinations might not exist
   id: ID!
 
-  " Smart contract address of the l1 token of the removed liquidity"
-  l1Token: Bytes!
+  " L1 token that is removed from the HubPool"
+  l1Token: L1Token!
 
   " Amount of the l1 token removed"
   amount: BigInt!
@@ -62,6 +62,20 @@ type RemovedLiquidity @entity {
 
   " Address of the liquidity provider"
   liquidityProvider: User!
+}
+
+type L1Token @entity {
+  " Smart contract address of the l1 token"
+  id: ID! 
+
+  " Amount of this l1Token in the HubPool"
+  amount: BigInt! 
+
+  " List of user entities that provided this l1Token as liquidity"
+  cumulativeUniqueLiquidityProviders: [AddedLiquidity!] @derivedFrom(field:"liquidityProvider")
+
+  " List of user entities that has active liquidity of l1Token in the HubPool"
+  activeLiquidityProviders: [AddedLiquidity!] @derivedFrom(field:"liquidityProviders")
 }
 
 # TODO hourly snapshot of the HubPool
