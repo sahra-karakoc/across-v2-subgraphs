@@ -67,7 +67,3 @@ type RemovedLiquidity @entity {
 # TODO hourly snapshot of the HubPool
 # TODO daility snapshot of the HubPool
 
-# enum AddedOrRemoved  {
-#   Added
-#   Removed
-# }
