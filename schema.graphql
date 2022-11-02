@@ -2,7 +2,10 @@ type HubPool @entity {
  " Set to 1 because it is unique" 
    id: ID! 
 
+  " List of user entities that provided liquidity"
    cumulativeUniqueLiquidityProviders: [User!]
+
+   " Number of user entities that provided liquidity"
    cumulativeUniqueLiquidityProvidersCount: BigInt!
 
 }
